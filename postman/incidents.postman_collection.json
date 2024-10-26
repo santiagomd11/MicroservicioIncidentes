@@ -1,0 +1,145 @@
+{
+	"info": {
+		"name": "Incidents Microservice",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"variable": [
+		{
+			"key": "host",
+			"value": "http://localhost:5007"
+		}
+	],
+	"item": [
+		{
+			"name": "Ping",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/ping",
+					"host": ["{{host}}"],
+					"path": ["ping"]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Clear Database",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/clear_database",
+					"host": ["{{host}}"],
+					"path": ["clear_database"]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create User",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"id\": \"user-id\",\n  \"name\": \"John Doe\",\n  \"phone\": \"1234567890\",\n  \"email\": \"john.doe@example.com\"\n}"
+				},
+				"url": {
+					"raw": "{{host}}/create_user",
+					"host": ["{{host}}"],
+					"path": ["create_user"]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get User",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/get_user/user-id",
+					"host": ["{{host}}"],
+					"path": ["get_user", "user-id"]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Incident",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"id\": \"incident-id\",\n  \"type\": \"PETICION\",\n  \"description\": \"Test incident\",\n  \"date\": \"2023-10-01T00:00:00Z\",\n  \"user_id\": \"user-id\",\n  \"chanel\": \"WEB\"\n}"
+				},
+				"url": {
+					"raw": "{{host}}/create_incident",
+					"host": ["{{host}}"],
+					"path": ["create_incident"]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Incident",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/get_incident/incident-id",
+					"host": ["{{host}}"],
+					"path": ["get_incident", "incident-id"]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Incidents",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/get_incidents",
+					"host": ["{{host}}"],
+					"path": ["get_incidents"]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Search Incident",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"user_id\": \"user-id\",\n  \"id\": \"incident-id\"\n}"
+				},
+				"url": {
+					"raw": "{{host}}/search_incident",
+					"host": ["{{host}}"],
+					"path": ["search_incident"]
+				}
+			},
+			"response": []
+		}
+	]
+}
