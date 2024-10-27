@@ -1,16 +1,20 @@
 from src.commands.base_command import BaseCommand
 from src.models.incident import Incident, db
-from src.errors.errors import NotFound
+from src.errors.errors import NotFound, BadRequest
 
 class SearchIncident(BaseCommand):
-    def __init__(self, search_criteria):
-        self.search_criteria = search_criteria
+    def __init__(self, json):
+        self.user_id = json.get('userId', '').strip()
+        self.incident_id = json.get('incidentId', '').strip()
 
     def execute(self):
         try:
-            # Check if both user_id and id are in the search criteria
-            if 'user_id' in self.search_criteria and 'id' in self.search_criteria:
-                query = query.filter_by(user_id=self.search_criteria['user_id'], id=self.search_criteria['id'])
+            query = Incident.query
+
+            if self.incident_id and self.user_id:
+                query = query.filter_by(user_id=self.user_id, id=self.incident_id)
+            else:
+                raise BadRequest('Both user_id and incidentId are required in the search criteria')
 
             incidents = query.all()
             if not incidents:
@@ -23,7 +27,7 @@ class SearchIncident(BaseCommand):
                     'description': incident.description,
                     'date': incident.date,
                     'user_id': incident.user_id,
-                    'chanel': incident.chanel.name
+                    'channel': incident.channel.name
                 }
                 for incident in incidents
             ]

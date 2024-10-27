@@ -12,7 +12,7 @@ class GetIncidents(BaseCommand):
                     'description': incident.description,
                     'date': incident.date,
                     'user_id': incident.user_id,
-                    'chanel': incident.chanel.name
+                    'channel': incident.channel.name
                 }
                 for incident in incidents
             ]

@@ -1,14 +1,10 @@
 {
 	"info": {
+		"_postman_id": "d0d9c6e3-b525-445f-830f-0928a4b12e3b",
 		"name": "Incidents Microservice",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "33340382"
 	},
-	"variable": [
-		{
-			"key": "host",
-			"value": "http://localhost:5007"
-		}
-	],
 	"item": [
 		{
 			"name": "Ping",
@@ -16,9 +12,14 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{host}}/ping",
-					"host": ["{{host}}"],
-					"path": ["ping"]
+					"raw": "{{host}}/incidents/ping",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"incidents",
+						"ping"
+					]
 				}
 			},
 			"response": []
@@ -29,15 +30,39 @@
 				"method": "POST",
 				"header": [],
 				"url": {
-					"raw": "{{host}}/clear_database",
-					"host": ["{{host}}"],
-					"path": ["clear_database"]
+					"raw": "{{host}}/incidents/clear_database",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"incidents",
+						"clear_database"
+					]
 				}
 			},
 			"response": []
 		},
 		{
 			"name": "Create User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Parse the response body to a JSON object\r",
+							"var jsonData = pm.response.json();\r",
+							"\r",
+							"// Set the 'userId' variable with the 'id' from the response\r",
+							"pm.collectionVariables.set(\"userId\", jsonData.id);\r",
+							"\r",
+							"// Log the userId to the console for verification (optional)\r",
+							"console.log(\"User ID set: \" + jsonData.id);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
 			"request": {
 				"method": "POST",
 				"header": [
@@ -48,12 +73,17 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"id\": \"user-id\",\n  \"name\": \"John Doe\",\n  \"phone\": \"1234567890\",\n  \"email\": \"john.doe@example.com\"\n}"
+					"raw": "{\n  \"id\": \"1193356789\",\n  \"name\": \"John Doe\",\n  \"phone\": \"1234567890\",\n  \"email\": \"john.doe@example.com\"\n}"
 				},
 				"url": {
-					"raw": "{{host}}/create_user",
-					"host": ["{{host}}"],
-					"path": ["create_user"]
+					"raw": "{{host}}/incidents/create_user",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"incidents",
+						"create_user"
+					]
 				}
 			},
 			"response": []
@@ -64,15 +94,40 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{host}}/get_user/user-id",
-					"host": ["{{host}}"],
-					"path": ["get_user", "user-id"]
+					"raw": "{{host}}/incidents/get_user/{{userId}}",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"incidents",
+						"get_user",
+						"{{userId}}"
+					]
 				}
 			},
 			"response": []
 		},
 		{
 			"name": "Create Incident",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Parse the response body to a JSON object\r",
+							"var jsonData = pm.response.json();\r",
+							"\r",
+							"// Set the 'incidentId' variable with the 'id' from the response\r",
+							"pm.collectionVariables.set(\"incidentId\", jsonData.id);\r",
+							"\r",
+							"// Log the incidentId to the console for verification (optional)\r",
+							"console.log(\"Incident ID set: \" + jsonData.id);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
 			"request": {
 				"method": "POST",
 				"header": [
@@ -83,12 +138,17 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"id\": \"incident-id\",\n  \"type\": \"PETICION\",\n  \"description\": \"Test incident\",\n  \"date\": \"2023-10-01T00:00:00Z\",\n  \"user_id\": \"user-id\",\n  \"chanel\": \"WEB\"\n}"
+					"raw": "{\n  \"id\": \"3441349499199\",\n  \"type\": \"PETICION\",\n  \"description\": \"Test incident\",\n  \"date\": \"2023-10-01T00:00:00Z\",\n  \"userId\": \"{{userId}}\",\n  \"chanel\": \"WEB\"\n}"
 				},
 				"url": {
-					"raw": "{{host}}/create_incident",
-					"host": ["{{host}}"],
-					"path": ["create_incident"]
+					"raw": "{{host}}/incidents/create_incident",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"incidents",
+						"create_incident"
+					]
 				}
 			},
 			"response": []
@@ -99,9 +159,15 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{host}}/get_incident/incident-id",
-					"host": ["{{host}}"],
-					"path": ["get_incident", "incident-id"]
+					"raw": "{{host}}/incidents/get_incident/{{incidentId}}",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"incidents",
+						"get_incident",
+						"{{incidentId}}"
+					]
 				}
 			},
 			"response": []
@@ -112,9 +178,33 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{host}}/get_incidents",
-					"host": ["{{host}}"],
-					"path": ["get_incidents"]
+					"raw": "{{host}}/incidents/get_incidents",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"incidents",
+						"get_incidents"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get User with incidents",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/incidents/get_user/{{userId}}",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"incidents",
+						"get_user",
+						"{{userId}}"
+					]
 				}
 			},
 			"response": []
@@ -131,15 +221,58 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"user_id\": \"user-id\",\n  \"id\": \"incident-id\"\n}"
+					"raw": "{\n  \"userId\": \"{{userId}}\",\n  \"incidentId\": \"{{incidentId}}\"\n}"
 				},
 				"url": {
-					"raw": "{{host}}/search_incident",
-					"host": ["{{host}}"],
-					"path": ["search_incident"]
+					"raw": "{{host}}/incidents/search_incident",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"incidents",
+						"search_incident"
+					]
 				}
 			},
 			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "host",
+			"value": "http://localhost:5007"
+		},
+		{
+			"key": "userId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "incidentId",
+			"value": "",
+			"type": "string"
 		}
 	]
 }

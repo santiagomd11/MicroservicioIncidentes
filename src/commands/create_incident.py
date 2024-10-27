@@ -1,6 +1,6 @@
 from src.commands.base_command import BaseCommand
 from src.errors.errors import BadRequest
-from src.models.incident import Incident, db, Type, Chanel
+from src.models.incident import Incident, db, Type, Channel
 import uuid
 import datetime
 
@@ -10,8 +10,8 @@ class CreateIncident(BaseCommand):
         self.type = json.get('type', Type.PETICION)
         self.description = json.get('description', '').strip()
         self.date = json.get('date', datetime.datetime.now())
-        self.user_id = json.get('user_id', '').strip()
-        self.chanel = json.get('chanel', Chanel.WEB)
+        self.user_id = json.get('userId', '').strip()
+        self.channel = json.get('channel', Channel.WEB)
 
     def execute(self):
         try:
@@ -27,8 +27,8 @@ class CreateIncident(BaseCommand):
             if not self.date:
                 raise BadRequest('Date is required')
 
-            if not self.chanel:
-                raise BadRequest('Chanel is required')
+            if not self.channel:
+                raise BadRequest('channel is required')
 
             incident = Incident(
                 id=self.id,
@@ -36,7 +36,7 @@ class CreateIncident(BaseCommand):
                 description=self.description,
                 date=self.date,
                 user_id=self.user_id,
-                chanel=self.chanel
+                channel=self.channel
             )
 
             db.session.add(incident)
