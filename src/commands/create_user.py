@@ -1,5 +1,5 @@
 from src.commands.base_command import BaseCommand
-from src.errors.errors import BadRequest
+from src.errors.errors import BadRequest, PreconditionFailed
 from src.models.user import User, db
 import uuid
 
@@ -36,6 +36,6 @@ class CreateUser(BaseCommand):
 
         except Exception as e:
             db.session.rollback()
-            raise e
+            raise PreconditionFailed('Error creating user, verify the data or if the user already exists') 
         
         return {"id": self.id, "name": self.name, "phone": self.phone, "email": self.email}

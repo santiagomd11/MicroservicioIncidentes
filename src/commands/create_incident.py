@@ -1,5 +1,5 @@
 from src.commands.base_command import BaseCommand
-from src.errors.errors import BadRequest
+from src.errors.errors import BadRequest, PreconditionFailed
 from src.models.incident import Incident, db, Type, Channel
 import uuid
 import datetime
@@ -44,6 +44,6 @@ class CreateIncident(BaseCommand):
 
         except Exception as e:
             db.session.rollback()
-            raise e
+            raise PreconditionFailed('Error creating incident, verify the data or if the incident already exists')
         
         return {"id": self.id, "description": self.description}
