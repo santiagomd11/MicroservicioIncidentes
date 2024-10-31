@@ -11,19 +11,19 @@ class CreateUser(BaseCommand):
         self.email = json.get('email', '').strip()
 
     def execute(self):
+        if not self.id:
+            raise BadRequest('Id is required')
+        
+        if not self.name:
+            raise BadRequest('Name is required')
+
+        if not self.phone:
+            raise BadRequest('Phone is required')
+
+        if not self.email:
+            raise BadRequest('Email is required')
+
         try:
-            if not self.id:
-                raise BadRequest('Id is required')
-            
-            if not self.name:
-                raise BadRequest('Name is required')
-
-            if not self.phone:
-                raise BadRequest('Phone is required')
-
-            if not self.email:
-                raise BadRequest('Email is required')
-
             user = User(
                 id=self.id,
                 name=self.name,

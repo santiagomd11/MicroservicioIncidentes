@@ -1,5 +1,5 @@
 from src.commands.base_command import BaseCommand
-from src.errors.errors import NotFound
+from src.errors.errors import NotFound, ApiError
 from src.models.incident import Incident, db
 
 class GetIncident(BaseCommand):
@@ -23,6 +23,10 @@ class GetIncident(BaseCommand):
 
             return incident_info
 
-        except Exception as e:
+        except NotFound as e:
             db.session.rollback()
             raise e
+        
+        except Exception as e:
+            db.session.rollback()
+            raise ApiError() from e

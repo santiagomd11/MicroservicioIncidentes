@@ -1,5 +1,6 @@
 from src.commands.base_command import BaseCommand
 from src.models.incident import Incident, db
+from src.errors.errors import ApiError
 
 class GetIncidents(BaseCommand):
     def execute(self):
@@ -21,4 +22,4 @@ class GetIncidents(BaseCommand):
 
         except Exception as e:
             db.session.rollback()
-            raise e
+            raise ApiError()

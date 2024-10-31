@@ -4,7 +4,7 @@ services:
   incidents-microservice:
     build: ..
     ports:
-      - "5007:5007"
+      - "5003:5003"
     environment:
       - FLASK_ENV=development
       - DB_HOST=incidents-db
@@ -14,6 +14,8 @@ services:
       - DB_PASSWORD=postgres
     depends_on:
       - incidents-db
+    networks:
+      - abc-call-network
 
   incidents-db:
     image: postgres:latest
@@ -24,10 +26,12 @@ services:
     ports:
       - "5433:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - postgres_data_incidents:/var/lib/postgresql/data
+    networks:
+      - abc-call-network
 
 volumes:
-  postgres_data:
+  postgres_data_incidents:
 
 networks:
   abc-call-network:

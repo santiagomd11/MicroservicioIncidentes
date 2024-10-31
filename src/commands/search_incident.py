@@ -1,6 +1,6 @@
 from src.commands.base_command import BaseCommand
 from src.models.incident import Incident, db
-from src.errors.errors import NotFound, BadRequest
+from src.errors.errors import NotFound, BadRequest, ApiError
 
 class SearchIncident(BaseCommand):
     def __init__(self, json):
@@ -36,4 +36,4 @@ class SearchIncident(BaseCommand):
 
         except Exception as e:
             db.session.rollback()
-            raise e
+            raise ApiError()

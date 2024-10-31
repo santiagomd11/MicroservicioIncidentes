@@ -1,5 +1,5 @@
 from src.commands.base_command import BaseCommand
-from src.errors.errors import NotFound
+from src.errors.errors import NotFound, ApiError
 from src.models.user import User, db
 
 class GetUser(BaseCommand):
@@ -30,7 +30,11 @@ class GetUser(BaseCommand):
             }
 
             return user_info
+        
+        except NotFound as e:
+            db.session.rollback()
+            raise e
 
         except Exception as e:
             db.session.rollback()
-            raise e
+            raise ApiError()
