@@ -3,12 +3,14 @@ from src.errors.errors import NotFound, ApiError
 from src.models.incident import Incident, db
 
 class GetIncident(BaseCommand):
-    def __init__(self, incident_id):
+    def __init__(self, incident_id, company):
         self.incident_id = incident_id
+        self.company = company
 
     def execute(self):
         try:
-            incident = Incident.query.filter_by(id=self.incident_id).first()
+            incident = Incident.query.filter_by(id=self.incident_id, company=self.company).first()
+            
             if not incident:
                 raise NotFound(f'Incident with id {self.incident_id} not found')
 

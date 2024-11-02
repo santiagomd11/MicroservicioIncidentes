@@ -32,15 +32,14 @@ def create_user():
     result = command.execute()
     return jsonify(result), 201
 
-@services_bp.route('/get_user/<user_id>', methods=['GET'])
-def get_user(user_id):
-    command = GetUser(user_id)
+@services_bp.route('/get_user/<user_id>/<company>', methods=['GET'])
+def get_user(user_id, company):
+    command = GetUser(user_id, company)
     result = command.execute()
     return jsonify(result), 200
     
 
 # Endpoints for Incident
-
 @services_bp.route('/create_incident', methods=['POST'])
 def create_incident():
     json_data = request.get_json()
@@ -48,15 +47,16 @@ def create_incident():
     result = command.execute()
     return jsonify(result), 201
 
-@services_bp.route('/get_incident/<incident_id>', methods=['GET'])
-def get_incident(incident_id):
-    command = GetIncident(incident_id)
+@services_bp.route('/get_incident/<incident_id>/<company>', methods=['GET'])
+def get_incident(incident_id, company):
+    command = GetIncident(incident_id, company)
     result = command.execute()
     return jsonify(result), 200
 
-@services_bp.route('/get_incidents', methods=['GET'])
-def get_incidents():
-    command = GetIncidents()
+# Agregar param para obtener los incidents de la campania especifica
+@services_bp.route('/get_incidents/<company>', methods=['GET'])
+def get_incidents(company):
+    command = GetIncidents(company)
     result = command.execute()
     return jsonify(result), 200
 

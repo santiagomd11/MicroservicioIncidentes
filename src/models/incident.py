@@ -25,9 +25,9 @@ class Incident(db.Model):
     description = db.Column(db.String, nullable=False)
     date = db.Column(db.DateTime, default=datetime.now(), nullable=False)
     user_id = db.Column(db.String, db.ForeignKey('user.id'), nullable=False)
+    agent_id = db.Column(db.String, nullable=False)
+    company = db.Column(db.String, default='')
     
-
-
 class EnumToDictionary(fields.Field):
     def _serialize(self, value, attr, obj, **kwargs):
         if value is None:

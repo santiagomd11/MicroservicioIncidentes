@@ -3,9 +3,12 @@ from src.models.incident import Incident, db
 from src.errors.errors import ApiError
 
 class GetIncidents(BaseCommand):
+    def __init__(self, company):
+        self.company = company
+        
     def execute(self):
         try:
-            incidents = Incident.query.all()
+            incidents = Incident.query.filter_by(company=self.company).all()
             incidents_info = [
                 {
                     'id': incident.id,

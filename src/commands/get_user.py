@@ -3,12 +3,13 @@ from src.errors.errors import NotFound, ApiError
 from src.models.user import User, db
 
 class GetUser(BaseCommand):
-    def __init__(self, user_id):
+    def __init__(self, user_id, company):
         self.user_id = user_id
+        self.company = company
 
     def execute(self):
         try:
-            user = User.query.filter_by(id=self.user_id).first()
+            user = User.query.filter_by(id=self.user_id, company=self.company).first()
             if not user:
                 raise NotFound(f'User with id {self.user_id} not found')
 
