@@ -14,6 +14,7 @@ class CreateIncident(BaseCommand):
         self.channel = json.get('channel', Channel.WEB)
         self.agent_id = json.get('agentId', '')
         self.company = json.get('company', '')
+        self.solved = json.get('solved', False)
 
     def execute(self):
         if not self.description:

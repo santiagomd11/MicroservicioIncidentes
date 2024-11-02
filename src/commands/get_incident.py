@@ -19,8 +19,11 @@ class GetIncident(BaseCommand):
                 'type': incident.type.name,
                 'description': incident.description,
                 'date': incident.date,
-                'user_id': incident.user_id,
-                'channel': incident.channel.name
+                'userId': incident.user_id,
+                'channel': incident.channel.name,
+                'agentId': incident.agent_id,
+                'company': incident.company,
+                'solved': incident.solved
             }
 
             return incident_info
