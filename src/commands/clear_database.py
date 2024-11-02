@@ -1,6 +1,6 @@
 from src.commands.base_command import BaseCommand
 from src.models import db
-
+from src.errors.errors import ApiError
 class ClearDatabase(BaseCommand):
     def execute(self):
         try:
@@ -11,4 +11,4 @@ class ClearDatabase(BaseCommand):
             db.session.commit()
         except Exception as e:
             db.session.rollback()
-            raise e
+            raise ApiError()

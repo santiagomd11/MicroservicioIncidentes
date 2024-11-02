@@ -257,7 +257,7 @@ Para correr las pruebas del proyecto ejecutar los siguientes comandos:
 pipenv shell
 ```
 ```bash
-pipenv run pytest --cov=src -v -s --cov-fail-under=70
+pipenv run pytest --cov=src -v -s --cov-fail-under=80
 ```
 
 ## Autor

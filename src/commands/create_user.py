@@ -9,26 +9,31 @@ class CreateUser(BaseCommand):
         self.name = json.get('name', '').strip()
         self.phone = json.get('phone', '').strip()
         self.email = json.get('email', '').strip()
+        self.company = json.get('company', '').strip()
 
     def execute(self):
+        if not self.id:
+            raise BadRequest('Id is required')
+        
+        if not self.name:
+            raise BadRequest('Name is required')
+
+        if not self.phone:
+            raise BadRequest('Phone is required')
+
+        if not self.email:
+            raise BadRequest('Email is required')
+
+        if not self.company:
+            raise BadRequest('Company is required')
+
         try:
-            if not self.id:
-                raise BadRequest('Id is required')
-            
-            if not self.name:
-                raise BadRequest('Name is required')
-
-            if not self.phone:
-                raise BadRequest('Phone is required')
-
-            if not self.email:
-                raise BadRequest('Email is required')
-
             user = User(
                 id=self.id,
                 name=self.name,
                 phone=self.phone,
-                email=self.email
+                email=self.email,
+                company=self.company
             )
 
             db.session.add(user)

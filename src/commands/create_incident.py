@@ -12,31 +12,41 @@ class CreateIncident(BaseCommand):
         self.date = json.get('date', datetime.datetime.now())
         self.user_id = json.get('userId', '').strip()
         self.channel = json.get('channel', Channel.WEB)
+        self.agent_id = json.get('agentId', '')
+        self.company = json.get('company', '')
 
     def execute(self):
+        if not self.description:
+            raise BadRequest('Description is required')
+
+        if not self.user_id:
+            raise BadRequest('User ID is required')
+
+        if not self.type:
+            raise BadRequest('Type is required')
+
+        if not self.date:
+            raise BadRequest('Date is required')
+
+        if not self.channel:
+            raise BadRequest('channel is required')
+        
+        if not self.agent_id:
+            raise BadRequest('Agent id is required')
+        
+        if not self.company:
+            raise BadRequest('Company is required')
+              
         try:
-            if not self.description:
-                raise BadRequest('Description is required')
-
-            if not self.user_id:
-                raise BadRequest('User ID is required')
-
-            if not self.type:
-                raise BadRequest('Type is required')
-
-            if not self.date:
-                raise BadRequest('Date is required')
-
-            if not self.channel:
-                raise BadRequest('channel is required')
-
             incident = Incident(
                 id=self.id,
                 type=self.type,
                 description=self.description,
                 date=self.date,
                 user_id=self.user_id,
-                channel=self.channel
+                channel=self.channel,
+                agent_id=self.agent_id,
+                company=self.company
             )
 
             db.session.add(incident)
