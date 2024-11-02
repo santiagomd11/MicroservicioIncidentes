@@ -7,6 +7,7 @@ from src.commands.get_incident import GetIncident
 from src.commands.get_incidents import GetIncidents
 from src.commands.create_incident import CreateIncident
 from src.commands.search_incident import SearchIncident
+from src.commands.update_incident_response import UpdateIncidentResponse
 
 from src.errors.errors import BadRequest, NotFound
 
@@ -65,5 +66,13 @@ def get_incidents(company):
 def search_incident():
     json_data = request.get_json()
     command = SearchIncident(json_data)
+    result = command.execute()
+    return jsonify(result), 200
+
+# Endpoint to update incident response
+@services_bp.route('/update_incident_response', methods=['PUT'])
+def update_incident_response():
+    json_data = request.get_json()
+    command = UpdateIncidentResponse(json_data)
     result = command.execute()
     return jsonify(result), 200

@@ -23,7 +23,8 @@ class GetIncident(BaseCommand):
                 'channel': incident.channel.name,
                 'agentId': incident.agent_id,
                 'company': incident.company,
-                'solved': incident.solved
+                'solved': incident.solved,
+                'response': incident.response
             }
 
             return incident_info
