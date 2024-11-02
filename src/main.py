@@ -53,4 +53,4 @@ def create_app(config_name, local=False):
 app = create_app('manejo-incidentes')
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=5007)
+    app.run(host='0.0.0.0', port=5003)
