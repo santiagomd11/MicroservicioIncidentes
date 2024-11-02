@@ -24,7 +24,10 @@ class GetUser(BaseCommand):
                         'type': incident.type.name,
                         'description': incident.description,
                         'date': incident.date,
-                        'channel': incident.channel.name
+                        'channel': incident.channel.name,
+                        'agentId': incident.agent_id,
+                        'company': incident.company,
+                        'solved': incident.solved
                     }
                     for incident in user.incidents
                 ]

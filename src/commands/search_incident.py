@@ -23,7 +23,8 @@ class SearchIncident(BaseCommand):
                 'userId': incident.user_id,
                 'channel': incident.channel.name,
                 'agentId': incident.agent_id,
-                'company': incident.company
+                'company': incident.company,
+                'solved': incident.solved
             }
 
             return incident_info

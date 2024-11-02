@@ -27,6 +27,7 @@ class Incident(db.Model):
     user_id = db.Column(db.String, db.ForeignKey('user.id'), nullable=False)
     agent_id = db.Column(db.String, nullable=False)
     company = db.Column(db.String, default='')
+    solved = db.Column(db.Boolean, default=False)
     
 class EnumToDictionary(fields.Field):
     def _serialize(self, value, attr, obj, **kwargs):
