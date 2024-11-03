@@ -1,6 +1,7 @@
 from src.commands.base_command import BaseCommand
-from src.errors.errors import BadRequest, PreconditionFailed
+from src.errors.errors import BadRequest, PreconditionFailed, NotFound
 from src.models.incident import Incident, db, Type, Channel
+from src.models.user import User
 import uuid
 import datetime
 
@@ -30,15 +31,19 @@ class CreateIncident(BaseCommand):
             raise BadRequest('Date is required')
 
         if not self.channel:
-            raise BadRequest('channel is required')
+            raise BadRequest('Channel is required')
         
         if not self.agent_id:
-            raise BadRequest('Agent id is required')
+            raise BadRequest('Agent ID is required')
         
         if not self.company:
             raise BadRequest('Company is required')
               
         try:
+            user = User.query.filter_by(id=self.user_id).first()
+            if not user:
+                raise NotFound(f'User with id {self.user_id} not found')
+
             incident = Incident(
                 id=self.id,
                 type=self.type,
@@ -57,4 +62,4 @@ class CreateIncident(BaseCommand):
             db.session.rollback()
             raise PreconditionFailed('Error creating incident, verify the data or if the incident already exists')
         
-        return {"id": self.id, "description": self.description}
+        return {"id": self.id, "description": self.description, "userEmail": user.email}
