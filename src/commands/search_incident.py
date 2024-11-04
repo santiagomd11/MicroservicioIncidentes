@@ -6,11 +6,15 @@ class SearchIncident(BaseCommand):
     def __init__(self, json):
         self.user_id = json.get('userId', '').strip()
         self.incident_id = json.get('incidentId', '').strip()
-        self.company = json.get('company', '').strip()
+        self.company = json.get('company') if json.get('company') is not None else ''
+        self.company.strip()
 
     def execute(self):
         try:
-            incident = Incident.query.filter_by(id=self.incident_id, user_id=self.user_id, company=self.company).first()
+            if self.company != '':
+                incident = Incident.query.filter_by(id=self.incident_id, user_id=self.user_id, company=self.company).first()
+            else:
+                incident = Incident.query.filter_by(id=self.incident_id, user_id=self.user_id).first()
             
             if not incident:
                 raise NotFound(f'Incident with id {self.incident_id} not found')
