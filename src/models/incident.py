@@ -18,7 +18,7 @@ class Channel(enum.Enum):
     MOBILE = 2
 
 class Incident(db.Model):
-    __tablename__ = 'client'
+    __tablename__ = 'incident'
     id = db.Column(db.String, primary_key=True, unique=True, nullable=False)
     type = db.Column(db.Enum(Type), default=Type.PETICION)
     channel = db.Column(db.Enum(Channel), default=Channel.WEB)
