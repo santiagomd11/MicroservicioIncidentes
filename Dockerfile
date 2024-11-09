@@ -1,6 +1,6 @@
 FROM python:3.9
 
-EXPOSE 5007
+EXPOSE 5003
 
 WORKDIR /manejoIncidentes
 

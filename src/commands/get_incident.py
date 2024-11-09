@@ -1,14 +1,16 @@
 from src.commands.base_command import BaseCommand
-from src.errors.errors import NotFound
+from src.errors.errors import NotFound, ApiError
 from src.models.incident import Incident, db
 
 class GetIncident(BaseCommand):
-    def __init__(self, incident_id):
+    def __init__(self, incident_id, company):
         self.incident_id = incident_id
+        self.company = company
 
     def execute(self):
         try:
-            incident = Incident.query.filter_by(id=self.incident_id).first()
+            incident = Incident.query.filter_by(id=self.incident_id, company=self.company).first()
+            
             if not incident:
                 raise NotFound(f'Incident with id {self.incident_id} not found')
 
@@ -17,12 +19,20 @@ class GetIncident(BaseCommand):
                 'type': incident.type.name,
                 'description': incident.description,
                 'date': incident.date,
-                'user_id': incident.user_id,
-                'channel': incident.channel.name
+                'userId': incident.user_id,
+                'channel': incident.channel.name,
+                'agentId': incident.agent_id,
+                'company': incident.company,
+                'solved': incident.solved,
+                'response': incident.response
             }
 
             return incident_info
 
-        except Exception as e:
+        except NotFound as e:
             db.session.rollback()
             raise e
+        
+        except Exception as e:
+            db.session.rollback()
+            raise ApiError() from e

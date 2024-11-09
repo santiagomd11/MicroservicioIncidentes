@@ -1,6 +1,6 @@
-# Servicio de Manejo de Clientes
+# Servicio de Manejo de Incidentes
 
-Este microservicio permite la gestión de los clientes desde su creación, actualización de planes, y es el encargado de manejar las transacciones relacionadas con los clientes.
+Este microservicio permite la gestión de incidentes, desde su creación, consulta, búsqueda y actualización de respuestas, y es el encargado de manejar las transacciones relacionadas con los incidentes.
 
 ## Índice
 
@@ -16,36 +16,62 @@ Este microservicio permite la gestión de los clientes desde su creación, actua
 .
 ├── Dockerfile
 ├── Pipfile
+├── Pipfile.lock
 ├── README.md
+├── local
+│   └── docker-compose.yaml
+├── piptest.ini
+├── postman
+│   └── incidents.postman_collection.json
 ├── src
+│   ├── __init__.py
 │   ├── blueprints
 │   │   ├── __init__.py
 │   │   └── services.py
 │   ├── commands
+│   │   ├── __init__.py
 │   │   ├── base_command.py
-│   │   ├── create.py
-│   │   ├── create_client.py
-│   │   ├── update_plan.py
-│   │   └── ping.py
+│   │   ├── clear_database.py
+│   │   ├── create_incident.py
+│   │   ├── create_user.py
+│   │   ├── get_incident.py
+│   │   ├── get_incidents.py
+│   │   ├── get_user.py
+│   │   ├── ping.py
+│   │   ├── search_incident.py
+│   │   └── update_incident_response.py
 │   ├── errors
-│   │   ├── errors.py
-│   │   └── __init__.py
-│   ├── __init__.py
+│   │   ├── __init__.py
+│   │   └── errors.py
 │   ├── main.py
 │   └── models
 │       ├── __init__.py
-│       └── client.py
+│       ├── incident.py
+│       └── user.py
 └── tests
     ├── __init__.py
-    └── test_create_client.py
+    ├── blueprints
+    │   ├── test_clear_db.py
+    │   ├── test_incidents.py
+    │   ├── test_ping.py
+    │   └── test_users.py
+    ├── commands
+    │   ├── test_clear_database.py
+    │   ├── test_create_incident.py
+    │   ├── test_create_user.py
+    │   ├── test_get_incident.py
+    │   ├── test_get_incidents.py
+    │   ├── test_get_user.py
+    │   ├── test_ping_command.py
+    │   └── test_search_incident.py
+    └── conftest.py
 ```
-
 
 ## Uso
 
-### 1. Creación de clientes
+### 1. Creación de usuarios
 
-Crea un cliente con los datos brindados, el nombre del cliente debe ser único, así como el correo.
+Permite la creación de un usuario con los datos proporcionados.
 
 <table>
 <tr>
@@ -54,7 +80,7 @@ Crea un cliente con los datos brindados, el nombre del cliente debe ser único, 
 </tr>
 <tr>
 <td> Ruta </td>
-<td> <strong>/clients/create_client</strong> </td>
+<td> <strong>/incidents/create_user</strong> </td>
 </tr>
 <tr>
 <td> Parámetros </td>
@@ -62,7 +88,7 @@ Crea un cliente con los datos brindados, el nombre del cliente debe ser único, 
 </tr>
 <tr>
 <td> Encabezados </td>
-<td>N/A</td>
+<td> N/A </td>
 </tr>
 <tr>
 <td> Cuerpo </td>
@@ -70,34 +96,25 @@ Crea un cliente con los datos brindados, el nombre del cliente debe ser único, 
 
 ```json
 {
-    "id": "ed140dbe-06d8-45dc-b5fc-4eb46606fc47",
+    "id": "12345",
     "name": "John Doe",
+    "phone": "1234567890",
     "email": "john.doe@example.com",
-    "idNumber": "123456789",
-    "phoneNumber": "321567890",
-    "plan": "EMPRENDEDOR_PLUS",
-    "rol": "CLIENTE",
-    "company": "uniandes"
-
+    "company": "example_company"
 }
 ```
 </td>
 </tr>
-</td>
 <td> Respuesta </td>
 <td>
-Informacion del cliente
 
 ```json
 {
-    "company": "uniandes",
-    "email": "john.doe@example.com",
-    "id": "ed140dbe-06d8-45dc-b5fc-4eb46606fc47",
-    "id_number": "123456789",
+    "id": "12345",
     "name": "John Doe",
-    "phoneNumber": "321567890",
-    "plan": "EMPRENDEDOR_PLUS",
-    "rol": "client"
+    "phone": "1234567890",
+    "email": "john.doe@example.com",
+    "company": "example_company"
 }
 ```
 </td>
@@ -105,8 +122,63 @@ Informacion del cliente
 
 </table>
 
-### 2. Obtener la infromacion de un cliente
-Obtiene un cliente a partir del id.
+### 2. Creación de incidentes
+
+Crea un incidente con los datos proporcionados.
+
+<table>
+<tr>
+<td> Método </td>
+<td> POST </td>
+</tr>
+<tr>
+<td> Ruta </td>
+<td> <strong>/incidents/create_incident</strong> </td>
+</tr>
+<tr>
+<td> Parámetros </td>
+<td> N/A </td>
+</tr>
+<tr>
+<td> Encabezados </td>
+<td> N/A </td>
+</tr>
+<tr>
+<td> Cuerpo </td>
+<td>
+
+```json
+{
+    "type": "PETICION",
+    "description": "Test incident",
+    "date": "2024-10-01T00:00:00Z",
+    "userId": "12345",
+    "channel": "WEB",
+    "agentId": "agent123",
+    "company": "example_company"
+}
+```
+</td>
+</tr>
+</td>
+<td> Respuesta </td>
+<td>
+
+```json
+{
+    "id": "123e4567-e89b-12d3-a456-426614174000",
+    "description": "Test incident",
+    "userEmail": "user@example.com"
+}
+```
+</td>
+<tr>
+
+</table>
+
+### 3. Obtener información de un incidente
+
+Obtiene los detalles de un incidente a partir de su ID.
 
 <table>
 <tr>
@@ -115,21 +187,19 @@ Obtiene un cliente a partir del id.
 </tr>
 <tr>
 <td> Ruta </td>
-<td> <strong>/clients/get_client</strong> </td>
+<td> <strong>/incidents/get_incident/&lt;incident_id&gt;/&lt;company&gt;</strong> </td>
 </tr>
 <tr>
 <td> Parámetros </td>
-<td> <strong>idCliente</strong></td>
+<td> <strong>incident_id, company</strong> </td>
 </tr>
 <tr>
 <td> Encabezados </td>
-<td>N/A</td>
+<td> N/A </td>
 </tr>
 <tr>
 <td> Cuerpo </td>
-<td>
-N/A
-</td>
+<td> N/A </td>
 </tr>
 </td>
 <td> Respuesta </td>
@@ -137,8 +207,16 @@ N/A
 
 ```json
 {
-    "email": "john.doe@example.com",
-    "id": "b030dabc-ff9e-4cbb-8d0b-974a68f297da"
+    "id": "123e4567-e89b-12d3-a456-426614174000",
+    "type": "PETICION",
+    "description": "Test incident",
+    "date": "2024-10-01T00:00:00Z",
+    "userId": "12345",
+    "channel": "WEB",
+    "agentId": "agent123",
+    "company": "example_company",
+    "solved": false,
+    "response": null
 }
 ```
 </td>
@@ -146,9 +224,64 @@ N/A
 
 </table>
 
-### 3. Actualización de plan de clientes
+### 4. Búsqueda de incidentes
 
-Actualiza el plan de un cliente con los datos brindados.
+Permite buscar incidentes con base en los criterios proporcionados.
+
+<table>
+<tr>
+<td> Método </td>
+<td> POST </td>
+</tr>
+<tr>
+<td> Ruta </td>
+<td> <strong>/incidents/search_incident</strong> </td>
+</tr>
+<tr>
+<td> Parámetros </td>
+<td> N/A </td>
+</tr>
+<tr>
+<td> Encabezados </td>
+<td> N/A </td>
+</tr>
+<tr>
+<td> Cuerpo </td>
+<td>
+
+```json
+{
+    "userId": "12345",
+    "incidentId": "123e4567-e89b-12d3-a456-426614174000"
+}
+```
+</td>
+</tr>
+<td> Respuesta </td>
+<td>
+
+```json
+{
+    "id": "123e4567-e89b-12d3-a456-426614174000",
+    "type": "PETICION",
+    "description": "Test incident",
+    "date": "2024-10-01T00:00:00Z",
+    "userId": "12345",
+    "channel": "WEB",
+    "agentId": "agent123",
+    "company": "example_company",
+    "solved": false,
+    "response": null
+}
+```
+</td>
+<tr>
+
+</table>
+
+### 5. Actualización de respuesta de incidente
+
+Permite actualizar la respuesta de un incidente existente.
 
 <table>
 <tr>
@@ -157,7 +290,7 @@ Actualiza el plan de un cliente con los datos brindados.
 </tr>
 <tr>
 <td> Ruta </td>
-<td> <strong>/clients/update_client_plan</strong> </td>
+<td> <strong>/incidents/update_incident_response</strong> </td>
 </tr>
 <tr>
 <td> Parámetros </td>
@@ -165,7 +298,7 @@ Actualiza el plan de un cliente con los datos brindados.
 </tr>
 <tr>
 <td> Encabezados </td>
-<td>N/A</td>
+<td> N/A </td>
 </tr>
 <tr>
 <td> Cuerpo </td>
@@ -173,19 +306,18 @@ Actualiza el plan de un cliente con los datos brindados.
 
 ```json
 {
-  "email": "john.doe@example.com",
-  "plan": "EMPRENDEDOR"
+    "incidentId": "123e4567-e89b-12d3-a456-426614174000",
+    "company": "example_company",
+    "response": "Incident has been resolved."
 }
 ```
 </td>
 </tr>
 </table>
 
+### 6. Consulta de salud del servicio
 
-
-### 4. Consulta de salud del servicio
-
-Usado para verificar el estado del servicio.
+Verifica el estado de salud del servicio.
 
 <table>
 <tr>
@@ -194,7 +326,7 @@ Usado para verificar el estado del servicio.
 </tr>
 <tr>
 <td> Ruta </td>
-<td> <strong>/clients/ping</strong> </td>
+<td> <strong>/incidents/ping</strong> </td>
 </tr>
 <tr>
 <td> Parámetros </td>
@@ -202,52 +334,9 @@ Usado para verificar el estado del servicio.
 </tr>
 <tr>
 <td> Encabezados </td>
-<td>N/A</td>
-</tr>
-<tr>
-<td> Cuerpo </td>
-<td> N/A </td>
-</tr>
-</table>
-
-### 5. Limpiar la base de datos
-
-Limpia la base de datos de clientes.
-
-<table>
-<tr>
-<td> Método </td>
-<td> POST </td>
-</tr>
-<tr>
-<td> Ruta </td>
-<td> <strong>/clients/clear_database</strong> </td>
-</tr>
-<tr>
-<td> Parámetros </td>
 <td> N/A </td>
 </tr>
 <tr>
-<td> Encabezados </td>
-<td>N/A</td>
-</tr>
-<tr>
-<td> Cuerpo </td>
-<td>N/A</td>
-</tr>
-</td>
-<td> Respuesta </td>
-<td>
-
-```json
-{
-    "message": "Database cleared successfully"
-}
-```
-</td>
-<tr>
-
-</table>
 
 ## Pruebas
 
@@ -257,7 +346,7 @@ Para correr las pruebas del proyecto ejecutar los siguientes comandos:
 pipenv shell
 ```
 ```bash
-pipenv run pytest --cov=src -v -s --cov-fail-under=70
+pipenv run pytest --cov=src -v -s --cov-fail-under=80 --log-cli-level=INFO
 ```
 
 ## Autor

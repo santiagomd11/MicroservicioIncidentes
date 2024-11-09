@@ -10,6 +10,7 @@ class User(db.Model):
     phone = db.Column(db.String, nullable=False)
     email = db.Column(db.String, nullable=False)
     incidents = db.relationship('Incident', backref='user', cascade='all, delete-orphan', lazy='dynamic')
+    company = db.Column(db.String, default='')
 
 class UserSchema(SQLAlchemyAutoSchema):
     class Meta:

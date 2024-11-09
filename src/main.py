@@ -7,8 +7,9 @@ from flask import Flask, jsonify
 
 from src.models import db
 from src.blueprints.services import services_bp
+from src.errors.errors import ApiError
 
-logging.basicConfig(level=os.environ.get("LOG_LEVEL", "INFO"))
+logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 def create_app(config_name, local=False):
@@ -30,9 +31,9 @@ def create_app(config_name, local=False):
         app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
         app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     except Exception as e:
-        print(f'Error connecting to db: {e}')
+        logger.error(f'Error connecting to db: {e}')
     finally:
-        print(db_uri)
+        logger.info(db_uri)
 
     app_context = app.app_context()
     app_context.push()
@@ -41,15 +42,15 @@ def create_app(config_name, local=False):
     time.sleep(5)
     db.create_all()
     
+    @app.errorhandler(ApiError)
+    def handle_exception(err):
+        trace = traceback.format_exc()
+        logger.info("Log error: " + str(trace))
+        return jsonify({"message": err.description}), err.code
+    
     return app
 
 app = create_app('manejo-incidentes')
 
-@app.errorhandler(Exception)
-def handle_exception(err):
-    trace = traceback.format_exc()
-    logger.info("Log error: " + str(trace))
-    return jsonify({"message": err.description}), err.code
-
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=5007)
+    app.run(host='0.0.0.0', port=5003)
