@@ -16,6 +16,7 @@ class Type(enum.Enum):
 class Channel(enum.Enum):
     WEB = 1 
     MOBILE = 2
+    EMAIL = 3
 
 class Incident(db.Model):
     __tablename__ = 'incident'
