@@ -4,9 +4,11 @@ from src.commands.clear_database import ClearDatabase
 from src.commands.create_user import CreateUser
 from src.commands.get_user import GetUser
 from src.commands.get_incident import GetIncident
+from src.commands.get_incident_public import GetIncidentPublic
 from src.commands.get_incidents import GetIncidents
 from src.commands.create_incident import CreateIncident
 from src.commands.search_incident import SearchIncident
+from src.commands.search_incident_public import SearchIncidentPublic
 from src.commands.update_incident_response import UpdateIncidentResponse
 
 from src.errors.errors import BadRequest, NotFound
@@ -61,11 +63,24 @@ def get_incidents(company):
     result = command.execute()
     return jsonify(result), 200
 
+@services_bp.route('/public/get_incident/<incident_id>', methods=['GET'])
+def get_incident_public(incident_id):
+    command = GetIncidentPublic(incident_id)
+    result = command.execute()
+    return jsonify(result), 200
+
 
 @services_bp.route('/search_incident', methods=['POST'])
 def search_incident():
     json_data = request.get_json()
     command = SearchIncident(json_data)
+    result = command.execute()
+    return jsonify(result), 200
+
+@services_bp.route('/public/search_incident', methods=['POST'])
+def search_incident_public():
+    json_data = request.get_json()
+    command = SearchIncidentPublic(json_data)
     result = command.execute()
     return jsonify(result), 200
 

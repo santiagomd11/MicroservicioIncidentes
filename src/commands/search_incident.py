@@ -10,30 +10,32 @@ class SearchIncident(BaseCommand):
         self.company.strip()
 
     def execute(self):
+        incident = ""
         try:
             if self.company != '':
                 incident = Incident.query.filter_by(id=self.incident_id, user_id=self.user_id, company=self.company).first()
             else:
                 incident = Incident.query.filter_by(id=self.incident_id, user_id=self.user_id).first()
-            
-            if not incident:
-                raise NotFound(f'Incident with id {self.incident_id} not found')
-
-            incident_info = {
-                'id': incident.id,
-                'type': incident.type.name,
-                'description': incident.description,
-                'date': incident.date,
-                'userId': incident.user_id,
-                'channel': incident.channel.name,
-                'agentId': incident.agent_id,
-                'company': incident.company,
-                'solved': incident.solved,
-                'response': incident.response
-            }
-
-            return incident_info
-
         except Exception as e:
             db.session.rollback()
             raise ApiError()
+
+        if not incident:
+            raise NotFound(f'Incidente no encontrado')
+
+        incident_info = {
+            'id': incident.id,
+            'type': incident.type.name,
+            'description': incident.description,
+            'date': incident.date,
+            'userId': incident.user_id,
+            'channel': incident.channel.name,
+            'agentId': incident.agent_id,
+            'company': incident.company,
+            'solved': incident.solved,
+            'response': incident.response
+        }
+
+        return incident_info
+
+        

@@ -72,6 +72,14 @@ class TestIncidentEndpoints(unittest.TestCase):
         self.assertIsInstance(response.get_json(), dict)
         self.assertEqual(response.get_json()['id'], incident_id)
 
+    def test_get_incident_public(self):
+        user_response, incident_response, company = self.create_user_and_incident()
+        incident_id = incident_response.get_json()['id']
+        response = self.client.get(f'/incidents/public/get_incident/{incident_id}')
+        self.assertEqual(response.status_code, 200)
+        self.assertIsInstance(response.get_json(), dict)
+        self.assertEqual(response.get_json()['id'], incident_id)
+
     def test_get_incidents(self):
         response = self.client.get('/incidents/get_incidents/uniandes')
         self.assertEqual(response.status_code, 200)
@@ -85,6 +93,15 @@ class TestIncidentEndpoints(unittest.TestCase):
             "company": company
         }
         response = self.client.post('/incidents/search_incident', json=payload)
+        self.assertEqual(response.status_code, 200)
+
+    def test_search_incident_public(self):
+        user_response, incident_response, company = self.create_user_and_incident()
+        payload = {
+            "userId": user_response.get_json()['id'],
+            "incidentId": incident_response.get_json()['id'],
+        }
+        response = self.client.post('incidents/public/search_incident', json=payload)
         self.assertEqual(response.status_code, 200)
 
 if __name__ == '__main__':
