@@ -16,7 +16,7 @@ class SearchIncidentPublic(BaseCommand):
             raise ApiError()
 
         if not incident:
-            raise NotFound(f'Incidente no encontrado')
+            raise NotFound("El incidente no fue encontrado")
 
         incident_info = {
             'id': incident.id,

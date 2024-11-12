@@ -20,7 +20,7 @@ class TestGetIncidentPublicCommand(unittest.TestCase):
         with self.assertRaises(NotFound) as context:
             self.command.execute()
 
-        self.assertEqual(str(context.exception), f'Incidente no encontrado')
+        self.assertEqual(str(context.exception), f'El incidente no fue encontrado')
 
     @patch('src.commands.get_incident_public.db')
     @patch('src.commands.get_incident_public.Incident')
