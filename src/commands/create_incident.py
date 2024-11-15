@@ -6,7 +6,7 @@ import uuid
 import datetime
 
 class CreateIncident(BaseCommand):
-    def __init__(self, json):
+    def __init__(self, json, origin_request):
         self.id = json.get('id', str(uuid.uuid4()))
         self.type = json.get('type', Type.PETICION)
         self.description = json.get('description', '').strip()

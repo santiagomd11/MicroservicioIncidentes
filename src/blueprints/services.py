@@ -31,7 +31,14 @@ def ping():
 @services_bp.route('/create_user', methods=['POST'])
 def create_user():
     json_data = request.get_json()
-    command = CreateUser(json_data)
+    command = CreateUser(json_data, "web")
+    result = command.execute()
+    return jsonify(result), 201
+
+@services_bp.route('/mobile/create_user', methods=['POST'])
+def create_user_mobile():
+    json_data = request.get_json()
+    command = CreateUser(json_data, "mobile")
     result = command.execute()
     return jsonify(result), 201
 
@@ -46,7 +53,14 @@ def get_user(user_id, company):
 @services_bp.route('/create_incident', methods=['POST'])
 def create_incident():
     json_data = request.get_json()
-    command = CreateIncident(json_data)
+    command = CreateIncident(json_data, "web")
+    result = command.execute()
+    return jsonify(result), 201
+
+@services_bp.route('/mobile/create_incident', methods=['POST'])
+def create_incident_mobile():
+    json_data = request.get_json()
+    command = CreateIncident(json_data, "mobile")
     result = command.execute()
     return jsonify(result), 201
 
@@ -73,14 +87,21 @@ def get_incident_public(incident_id):
 @services_bp.route('/search_incident', methods=['POST'])
 def search_incident():
     json_data = request.get_json()
-    command = SearchIncident(json_data)
+    command = SearchIncident(json_data, "web")
+    result = command.execute()
+    return jsonify(result), 200
+
+@services_bp.route('/mobile/search_incident', methods=['POST'])
+def search_incident_mobile():
+    json_data = request.get_json()
+    command = SearchIncident(json_data, "mobile")
     result = command.execute()
     return jsonify(result), 200
 
 @services_bp.route('/public/search_incident', methods=['POST'])
 def search_incident_public():
     json_data = request.get_json()
-    command = SearchIncidentPublic(json_data)
+    command = SearchIncidentPublic(json_data, "web")
     result = command.execute()
     return jsonify(result), 200
 

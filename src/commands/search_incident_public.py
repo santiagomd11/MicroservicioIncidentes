@@ -3,7 +3,7 @@ from src.models.incident import Incident, db
 from src.errors.errors import NotFound, ApiError
 
 class SearchIncidentPublic(BaseCommand):
-    def __init__(self, json):
+    def __init__(self, json, origin_request):
         self.user_id = json.get('userId', '').strip()
         self.incident_id = json.get('incidentId', '').strip()
 
