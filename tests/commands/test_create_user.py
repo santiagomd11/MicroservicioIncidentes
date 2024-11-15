@@ -15,7 +15,7 @@ class TestCreateUserCommand(unittest.TestCase):
         }
 
     def test_create_user_success(self):
-        command = CreateUser(self.valid_json)
+        command = CreateUser(self.valid_json, "web")
         with patch.object(db.session, 'add', MagicMock()) as mock_add, \
              patch.object(db.session, 'commit', MagicMock()) as mock_commit:
             response = command.execute()
@@ -31,7 +31,7 @@ class TestCreateUserCommand(unittest.TestCase):
     def test_create_user_missing_id(self):
         invalid_json = self.valid_json.copy()
         invalid_json['id'] = ''
-        command = CreateUser(invalid_json)
+        command = CreateUser(invalid_json, "web")
         with self.assertRaises(BadRequest) as context:
             command.execute()
         self.assertEqual(str(context.exception), 'Id is required')
@@ -39,7 +39,7 @@ class TestCreateUserCommand(unittest.TestCase):
     def test_create_user_missing_name(self):
         invalid_json = self.valid_json.copy()
         invalid_json['name'] = ''
-        command = CreateUser(invalid_json)
+        command = CreateUser(invalid_json, "web")
         with self.assertRaises(BadRequest) as context:
             command.execute()
         self.assertEqual(str(context.exception), 'Name is required')
@@ -47,7 +47,7 @@ class TestCreateUserCommand(unittest.TestCase):
     def test_create_user_missing_phone(self):
         invalid_json = self.valid_json.copy()
         invalid_json['phone'] = ''
-        command = CreateUser(invalid_json)
+        command = CreateUser(invalid_json, "web")
         with self.assertRaises(BadRequest) as context:
             command.execute()
         self.assertEqual(str(context.exception), 'Phone is required')
@@ -55,7 +55,7 @@ class TestCreateUserCommand(unittest.TestCase):
     def test_create_user_missing_email(self):
         invalid_json = self.valid_json.copy()
         invalid_json['email'] = ''
-        command = CreateUser(invalid_json)
+        command = CreateUser(invalid_json, "web")
         with self.assertRaises(BadRequest) as context:
             command.execute()
         self.assertEqual(str(context.exception), 'Email is required')
@@ -63,13 +63,13 @@ class TestCreateUserCommand(unittest.TestCase):
     def test_create_user_missing_company(self):
         invalid_json = self.valid_json.copy()
         invalid_json['company'] = ''
-        command = CreateUser(invalid_json)
+        command = CreateUser(invalid_json, "web")
         with self.assertRaises(BadRequest) as context:
             command.execute()
         self.assertEqual(str(context.exception), 'Company is required')
 
     def test_create_user_precondition_failed(self):
-        command = CreateUser(self.valid_json)
+        command = CreateUser(self.valid_json, "web")
         with patch.object(db.session, 'add', MagicMock()) as mock_add, \
              patch.object(db.session, 'commit', MagicMock(side_effect=Exception('DB Error'))) as mock_commit, \
              patch.object(db.session, 'rollback', MagicMock()) as mock_rollback:

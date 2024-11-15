@@ -14,7 +14,7 @@ class TestSearchIncidentPublicCommand(unittest.TestCase):
             "userId":self.user_id,
             "incidentId":self.incident_id
         }
-        self.command = SearchIncidentPublic(json_data)
+        self.command = SearchIncidentPublic(json_data, "web")
 
     @patch('src.commands.search_incident_public.Incident')
     def test_search_incident_public_success(self, mock_incident):

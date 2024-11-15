@@ -4,7 +4,7 @@ from src.models.user import User, db
 import uuid
 
 class CreateUser(BaseCommand):
-    def __init__(self, json):
+    def __init__(self, json, origin_request):
         self.id = json.get('id', '')
         self.name = json.get('name', '').strip()
         self.phone = json.get('phone', '').strip()

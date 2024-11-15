@@ -3,7 +3,7 @@ from src.models.incident import Incident, db
 from src.errors.errors import NotFound, BadRequest, ApiError
 
 class SearchIncident(BaseCommand):
-    def __init__(self, json):
+    def __init__(self, json, origin_request):
         self.user_id = json.get('userId', '').strip()
         self.incident_id = json.get('incidentId', '').strip()
         self.company = json.get('company') if json.get('company') is not None else ''
