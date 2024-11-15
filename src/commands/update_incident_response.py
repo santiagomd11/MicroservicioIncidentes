@@ -25,6 +25,7 @@ class UpdateIncidentResponse(BaseCommand):
                 raise NotFound(f'Incident with id {self.incident_id} not found')
 
             incident.response = self.response
+            incident.solved = True
             db.session.commit()
 
             return {
