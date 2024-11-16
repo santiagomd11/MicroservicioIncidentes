@@ -26,7 +26,7 @@ class Incident(db.Model):
     description = db.Column(db.String, nullable=False)
     date = db.Column(db.DateTime, default=datetime.now(), nullable=False)
     user_id = db.Column(db.String, db.ForeignKey('user.id'), nullable=False)
-    agent_id = db.Column(db.String, nullable=False)
+    agent_id = db.Column(db.String, default='')
     company = db.Column(db.String, default='')
     solved = db.Column(db.Boolean, default=False)
     response = db.Column(db.String, default='')

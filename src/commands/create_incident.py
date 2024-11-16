@@ -33,9 +33,6 @@ class CreateIncident(BaseCommand):
         if not self.channel:
             raise BadRequest('Channel is required')
         
-        if not self.agent_id:
-            raise BadRequest('Agent ID is required')
-        
         if not self.company:
             raise BadRequest('Company is required')
               
