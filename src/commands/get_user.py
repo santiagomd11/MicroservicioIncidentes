@@ -9,7 +9,11 @@ class GetUser(BaseCommand):
 
     def execute(self):
         try:
-            user = User.query.filter_by(id=self.user_id, company=self.company).first()
+            if self.company != '':
+                user = User.query.filter_by(id=self.user_id, company=self.company).first()
+            else:
+                user = User.query.filter_by(id=self.user_id).first()
+
             if not user:
                 raise NotFound(f'User with id {self.user_id} not found')
 
@@ -18,6 +22,7 @@ class GetUser(BaseCommand):
                 'name': user.name,
                 'phone': user.phone,
                 'email': user.email,
+                'company': user.company,
                 'incidents': [
                     {
                         'id': incident.id,

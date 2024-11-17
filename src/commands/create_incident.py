@@ -12,8 +12,8 @@ class CreateIncident(BaseCommand):
         self.description = json.get('description', '').strip()
         self.date = json.get('date', datetime.datetime.now())
         self.user_id = json.get('userId', '').strip()
-        self.channel = json.get('channel', Channel.WEB)
-        self.agent_id = json.get('agentId', '')
+        self.channel = json.get('channel', Channel.MOBILE if origin_request=='mobile' else Channel.WEB)
+        self.agent_id = json.get('agentId', None)
         self.company = json.get('company', '')
         self.solved = json.get('solved', False)
 
