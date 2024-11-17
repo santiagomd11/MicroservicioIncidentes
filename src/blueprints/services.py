@@ -10,6 +10,7 @@ from src.commands.create_incident import CreateIncident
 from src.commands.search_incident import SearchIncident
 from src.commands.search_incident_public import SearchIncidentPublic
 from src.commands.update_incident_response import UpdateIncidentResponse
+from src.commands.update_incident_agent import UpdateIncidentAgent
 
 from src.errors.errors import BadRequest, NotFound
 
@@ -110,5 +111,13 @@ def search_incident_public():
 def update_incident_response():
     json_data = request.get_json()
     command = UpdateIncidentResponse(json_data)
+    result = command.execute()
+    return jsonify(result), 200
+
+# update incident agent
+@services_bp.route('/update_incident_agent', methods=['PUT'])
+def update_incident_agent():
+    json_data = request.get_json()
+    command = UpdateIncidentAgent(json_data, "web")
     result = command.execute()
     return jsonify(result), 200
