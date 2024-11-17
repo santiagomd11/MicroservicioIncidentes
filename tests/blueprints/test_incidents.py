@@ -133,6 +133,17 @@ class TestIncidentEndpoints(unittest.TestCase):
         }
         response = self.client.post('/incidents/public/search_incident', json=payload)
         self.assertEqual(response.status_code, 200)
+    
+    def test_update_incident_agent(self):
+        user_response, incident_response, company = self.create_user_and_incident()
+        payload = {
+            "incidentId": incident_response.get_json()['id'],
+            "agentId": "1241412",
+            "company": company
+        }
+        response = self.client.put('/incidents/update_incident_agent', json=payload)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.get_json()['agentId'], "1241412")
 
 if __name__ == '__main__':
     unittest.main()
