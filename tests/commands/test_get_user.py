@@ -17,6 +17,7 @@ class TestGetUserCommand(unittest.TestCase):
         mock_user_instance.name = 'John Doe'
         mock_user_instance.phone = '1234567890'
         mock_user_instance.email = 'john.doe@example.com'
+        mock_user_instance.company = 'company1'
         mock_user_instance.incidents = []
 
         mock_user.query.filter_by.return_value.first.return_value = mock_user_instance
@@ -28,6 +29,7 @@ class TestGetUserCommand(unittest.TestCase):
             'name': 'John Doe',
             'phone': '1234567890',
             'email': 'john.doe@example.com',
+            'company': 'company1',
             'incidents': []
         })
 
