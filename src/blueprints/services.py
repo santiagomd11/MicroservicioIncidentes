@@ -48,7 +48,12 @@ def get_user(user_id, company):
     command = GetUser(user_id, company)
     result = command.execute()
     return jsonify(result), 200
-    
+
+@services_bp.route('/mobile/get_user/<user_id>', methods=['GET'])
+def get_user_mobile(user_id):
+    command = GetUser(user_id, '')
+    result = command.execute()
+    return jsonify(result), 200 
 
 # Endpoints for Incident
 @services_bp.route('/create_incident', methods=['POST'])
