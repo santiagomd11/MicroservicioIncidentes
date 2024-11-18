@@ -352,3 +352,4 @@ pipenv run pytest --cov=src -v -s --cov-fail-under=80 --log-cli-level=INFO
 ## Autor
 
 Victor Santiago Montaño Diaz
+
