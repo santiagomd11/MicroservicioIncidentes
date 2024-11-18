@@ -6,14 +6,14 @@ import uuid
 import datetime
 
 class CreateIncident(BaseCommand):
-    def __init__(self, json):
+    def __init__(self, json, origin_request):
         self.id = json.get('id', str(uuid.uuid4()))
         self.type = json.get('type', Type.PETICION)
         self.description = json.get('description', '').strip()
         self.date = json.get('date', datetime.datetime.now())
         self.user_id = json.get('userId', '').strip()
-        self.channel = json.get('channel', Channel.WEB)
-        self.agent_id = json.get('agentId', '')
+        self.channel = json.get('channel', Channel.MOBILE if origin_request=='mobile' else Channel.WEB)
+        self.agent_id = json.get('agentId', None)
         self.company = json.get('company', '')
         self.solved = json.get('solved', False)
 
@@ -32,9 +32,6 @@ class CreateIncident(BaseCommand):
 
         if not self.channel:
             raise BadRequest('Channel is required')
-        
-        if not self.agent_id:
-            raise BadRequest('Agent ID is required')
         
         if not self.company:
             raise BadRequest('Company is required')

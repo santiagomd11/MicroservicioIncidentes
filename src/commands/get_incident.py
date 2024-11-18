@@ -12,7 +12,7 @@ class GetIncident(BaseCommand):
             incident = Incident.query.filter_by(id=self.incident_id, company=self.company).first()
             
             if not incident:
-                raise NotFound(f'Incident with id {self.incident_id} not found')
+                raise NotFound("El incidente no fue encontrado")
 
             incident_info = {
                 'id': incident.id,

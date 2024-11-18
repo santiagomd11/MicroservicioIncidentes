@@ -4,10 +4,13 @@ from src.commands.clear_database import ClearDatabase
 from src.commands.create_user import CreateUser
 from src.commands.get_user import GetUser
 from src.commands.get_incident import GetIncident
+from src.commands.get_incident_public import GetIncidentPublic
 from src.commands.get_incidents import GetIncidents
 from src.commands.create_incident import CreateIncident
 from src.commands.search_incident import SearchIncident
+from src.commands.search_incident_public import SearchIncidentPublic
 from src.commands.update_incident_response import UpdateIncidentResponse
+from src.commands.update_incident_agent import UpdateIncidentAgent
 
 from src.errors.errors import BadRequest, NotFound
 
@@ -29,7 +32,14 @@ def ping():
 @services_bp.route('/create_user', methods=['POST'])
 def create_user():
     json_data = request.get_json()
-    command = CreateUser(json_data)
+    command = CreateUser(json_data, "web")
+    result = command.execute()
+    return jsonify(result), 201
+
+@services_bp.route('/mobile/create_user', methods=['POST'])
+def create_user_mobile():
+    json_data = request.get_json()
+    command = CreateUser(json_data, "mobile")
     result = command.execute()
     return jsonify(result), 201
 
@@ -38,13 +48,25 @@ def get_user(user_id, company):
     command = GetUser(user_id, company)
     result = command.execute()
     return jsonify(result), 200
-    
+
+@services_bp.route('/mobile/get_user/<user_id>', methods=['GET'])
+def get_user_mobile(user_id):
+    command = GetUser(user_id, '')
+    result = command.execute()
+    return jsonify(result), 200 
 
 # Endpoints for Incident
 @services_bp.route('/create_incident', methods=['POST'])
 def create_incident():
     json_data = request.get_json()
-    command = CreateIncident(json_data)
+    command = CreateIncident(json_data, "web")
+    result = command.execute()
+    return jsonify(result), 201
+
+@services_bp.route('/mobile/create_incident', methods=['POST'])
+def create_incident_mobile():
+    json_data = request.get_json()
+    command = CreateIncident(json_data, "mobile")
     result = command.execute()
     return jsonify(result), 201
 
@@ -61,11 +83,31 @@ def get_incidents(company):
     result = command.execute()
     return jsonify(result), 200
 
+@services_bp.route('/public/get_incident/<incident_id>', methods=['GET'])
+def get_incident_public(incident_id):
+    command = GetIncidentPublic(incident_id)
+    result = command.execute()
+    return jsonify(result), 200
+
 
 @services_bp.route('/search_incident', methods=['POST'])
 def search_incident():
     json_data = request.get_json()
-    command = SearchIncident(json_data)
+    command = SearchIncident(json_data, "web")
+    result = command.execute()
+    return jsonify(result), 200
+
+@services_bp.route('/mobile/search_incident', methods=['POST'])
+def search_incident_mobile():
+    json_data = request.get_json()
+    command = SearchIncident(json_data, "mobile")
+    result = command.execute()
+    return jsonify(result), 200
+
+@services_bp.route('/public/search_incident', methods=['POST'])
+def search_incident_public():
+    json_data = request.get_json()
+    command = SearchIncidentPublic(json_data, "web")
     result = command.execute()
     return jsonify(result), 200
 
@@ -74,5 +116,13 @@ def search_incident():
 def update_incident_response():
     json_data = request.get_json()
     command = UpdateIncidentResponse(json_data)
+    result = command.execute()
+    return jsonify(result), 200
+
+# update incident agent
+@services_bp.route('/update_incident_agent', methods=['PUT'])
+def update_incident_agent():
+    json_data = request.get_json()
+    command = UpdateIncidentAgent(json_data, "web")
     result = command.execute()
     return jsonify(result), 200
